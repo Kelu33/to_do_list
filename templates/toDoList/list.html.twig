@@ -1,0 +1,32 @@
+{% extends 'toDoList/main.html.twig' %}
+
+{% block title %}To Do List : {{ name }}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('homePage') }}"><=</a>
+    <h1>{{ name }}</h1>
+    <a href="{{ path('edit', {id: id}) }}">editer le nom</a>
+    <h2><a href="{{ path('add', {name: name}) }}">Ajouter une Tâche</a></h2>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                {{ task.titre|e }}
+                <a href="{{ path('editTask', {id: task.id}) }}">Editer</a>
+                <label for={{ task.id }}>Fait</label>
+                {% if task.fait %}
+                    <input type="checkbox" id={{ task.id }} name="done" checked>
+                {% else %}
+                    <input type="checkbox" id={{ task.id }} name="done">
+                {% endif %}
+                <script>
+                    document
+                        .getElementById({{ task.id }})
+                        .addEventListener('change', (event) => {
+                            window.location.href = "{{ path('updateState', {id: task.id}) }}";
+                    })
+                </script>
+                <a href="{{ path('deleteTask', {id: task.id}) }}">Supprimer</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
